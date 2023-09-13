@@ -214,6 +214,19 @@ void RCC_IRQHandler(void)
   /* USER CODE END RCC_IRQn 1 */
 }
 
+/**
+* @brief This function handles EXTI line3 interrupt.
+*/
+void EXTI3_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI3_IRQn 0 */
+
+  /* USER CODE END EXTI3_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
+  /* USER CODE BEGIN EXTI3_IRQn 1 */
+
+  /* USER CODE END EXTI3_IRQn 1 */
+}
 
 /**
 * @brief This function handles EXTI line[9:5] interrupts.
@@ -223,7 +236,7 @@ void EXTI9_5_IRQHandler(void)
   /* USER CODE BEGIN EXTI9_5_IRQn 0 */
 
   /* USER CODE END EXTI9_5_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
+
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_8);
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */
 
@@ -360,28 +373,13 @@ void TIM3_IRQHandler(void)
 */
 void USART1_IRQHandler(void)
 {
-	  if (huart1.Instance->SR & UART_FLAG_IDLE)
-	  {
-	    // clear the IDLE interrupt
-	    // see RM0008 27.6.1 Status register (USART_SR)
-	    __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 0 */
 
-	    // Disable uart idle interrupt here and enable it again at the end of the uart processing?
-	    // -> Decided not to do it and assuming the cpu is fast enough to always process incoming messages.
-	    // -> If a new message is received before the previous message has been processed, it would simply be disregarded in Display_Service
-	    //          as the format is not correct.
+  /* USER CODE END USART1_IRQn 0 */
+  HAL_UART_IRQHandler(&huart1);
+  /* USER CODE BEGIN USART1_IRQn 1 */
 
-	    //
-	    //HAL_UART_DMAStop(&huart1);
-	    //
-	    //HAL_UART_RxCpltCallback(&huart1);
-	    UART_IdleItCallback();
-
-	  }
-	  else
-	  {
-	    HAL_UART_IRQHandler(&huart1);
-	  }
+  /* USER CODE END USART1_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
