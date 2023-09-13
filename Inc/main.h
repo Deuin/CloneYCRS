@@ -72,37 +72,27 @@
 #define Temperature_GPIO_Port GPIOB
 #define LED_Pin GPIO_PIN_2
 #define LED_GPIO_Port GPIOB
-#define LIGHT_Pin GPIO_PIN_9
-#define LIGHT_GPIO_Port GPIOB
-#define BRAKE_LIGHT_Pin GPIO_PIN_10
-#define BRAKE_LIGHT_GPIO_Port GPIOB
+#define LIGHT_Pin GPIO_PIN_11
+#define LIGHT_GPIO_Port GPIOA
+#define BRAKE_LIGHT_Pin GPIO_PIN_12
+#define BRAKE_LIGHT_GPIO_Port GPIOA
 #define PAS_Pin GPIO_PIN_8
 #define PAS_GPIO_Port GPIOB
-#define Brake_Pin GPIO_PIN_11  // put a 15 here for new generation controllers!
+#define Brake_Pin GPIO_PIN_15  // put a 15 here for new generation controllers!
 #define Brake_GPIO_Port GPIOA
-#define Speed_EXTI5_Pin GPIO_PIN_5
-#define Speed_EXTI5_GPIO_Port GPIOB
-#define Speed_EXTI5_EXTI_IRQn EXTI9_5_IRQn
+#define Speed_EXTI3_Pin GPIO_PIN_3
+#define Speed_EXTI3_GPIO_Port GPIOB
+//#define Speed_EXTI5_EXTI_IRQn EXTI9_5_IRQn //nach Update 24.11.22 scheinbar nicht mehr benötigt
 #define PAS_EXTI8_Pin GPIO_PIN_8
 #define PAS_EXTI8_GPIO_Port GPIOB
-#define PAS_EXTI8_EXTI_IRQn EXTI9_5_IRQn
+//#define PAS_EXTI8_EXTI_IRQn EXTI9_5_IRQn //nach Update 24.11.22 scheinbar nicht mehr benötigt
 
 //#define NCTE
 #define LEGALFLAG
 #define BATTERYVOLTAGE_MAX 53000
 #define R_TEMP_PULLUP 0
-#define INT_TEMP_25 0
-#define USE_FIX_POSITIONS 0
-//Put values from the startup message after autodetect here, if you want to use fix positions. 32bit values for the hall angles!
-#define KV 80
-#define HALL_ORDER 1
-#define HALL_45 2636578816
-#define HALL_51 1896939520
-#define HALL_13 1157234688
-#define HALL_32 322109440
-#define HALL_26 4092133376
-#define HALL_64 3209232384
-
+#define TORQUE_OFFSET 600
+#define TORQUE_MAX 3000
 
 /* ########################## Assert Selection ############################## */
 /**
@@ -119,14 +109,11 @@
 int32_t map (int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 void autodetect();
 void runPIcontrol();
-void kingmeter_update(void);
 
 extern uint16_t switchtime[3];
 extern uint32_t ui32_tim1_counter;
 extern uint32_t uint32_PAS_counter;
 extern uint8_t throttle_is_set(void);
-extern void UART_IdleItCallback(void);
-extern void get_internal_temp_offset(void);
 
 typedef struct
 {
@@ -164,7 +151,6 @@ typedef struct
 	uint8_t 		assist_level;
 	uint8_t 		regen_level;
 	int16_t         Temperature;
-	int16_t         int_Temperature;
 	int8_t         	system_state;
 	int8_t         	gear_state;
 	int8_t         	error_state;
@@ -190,7 +176,7 @@ typedef struct
 	uint8_t       	speedLimit;
 	uint8_t       	pulses_per_revolution;
 	uint16_t       	phase_current_max;
-	int32_t       	battery_current_max;
+	int16_t       	spec_angle;
 
 
 }MotorParams_t;
